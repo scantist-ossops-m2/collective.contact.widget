@@ -4,7 +4,7 @@ from zope.component.hooks import getSite
 from zope import interface
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.schema.interfaces import IVocabularyFactory
-from zope.interface.declarations import implements
+from zope.interface.declarations import implementer
 from zope.i18n import translate
 
 from Products.CMFCore.utils import getToolByName
@@ -45,8 +45,8 @@ def getContactChoiceFieldSchema(field):
     return IContactChoiceField
 
 
+@implementer(IContactChoiceField)
 class ContactChoiceField(object):
-    interface.implements(IContactChoiceField)
     component.adapts(IContactChoice)
 
     def __init__(self, field):
@@ -59,16 +59,16 @@ def getContactListChoiceFieldSchema(field):
     return IContactChoiceField
 
 
+@implementer(IContactChoiceField)
 class ContactListChoiceField(object):
-    interface.implements(IContactChoiceField)
     component.adapts(IContactList)
 
     def __init__(self, field):
         self.__dict__['field'] = field
 
 
+@implementer(IVocabularyFactory)
 class ContactTypesVocabulary(object):
-    implements(IVocabularyFactory)
 
     def __call__(self, context):
         contact_types = ('held_position', 'organization',

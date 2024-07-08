@@ -16,10 +16,9 @@ from z3c.form.interfaces import IFieldWidget
 from z3c.form.widget import FieldWidget
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
-from zope.component.interfaces import ComponentLookupError
+from zope.interface.interfaces import ComponentLookupError
 from zope.i18n import translate
 from zope.interface import implementer
-from zope.interface import implements
 from zope.interface import Interface
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabulary
@@ -33,8 +32,9 @@ import z3c.form.interfaces
 try:
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
     from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
+
+    @implementer(IMasterSelectWidget)
     class MasterSelect(BaseMasterSelect):
-        grok.implements(IMasterSelectWidget)
         def getSlaves(self):
             for slave in self.field.slave_fields:
                 yield slave.copy()
@@ -85,8 +85,8 @@ class TermViewlet(grok.Viewlet):
             '|'.join([self.token, self.title, self.portal_type, self.url]))
 
 
+@implementer(IContactAutocompleteWidget)
 class ContactBaseWidget(object):
-    implements(IContactAutocompleteWidget)
     noValueLabel = _(u'(nothing)')
     autoFill = False
     maxResults = 50
@@ -205,13 +205,15 @@ function (event, data, formatted) {
             return None
 
 
+@implementer(IContactAutocompleteSelectionWidget)
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
-    implements(IContactAutocompleteSelectionWidget)
     display_template = ViewPageTemplateFile('templates/contact_display_single.pt')
 
 
+@implementer(IContactAutocompleteMultiSelectionWidget)
 class ContactAutocompleteMultiSelectionWidget(ContactBaseWidget, AutocompleteMultiSelectionWidget):
-    implements(IContactAutocompleteMultiSelectionWidget)
+    """
+    """
 
 
 @implementer(IFieldWidget)
