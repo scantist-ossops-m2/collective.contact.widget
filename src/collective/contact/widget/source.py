@@ -141,7 +141,7 @@ class ContactSource(ObjPathSource):
             catalog = getUtility(ICatalog)
             intids = getUtility(IIntIds)
             related_uids = set()
-            for relation, related_to_path in rels.items():
+            for relation, related_to_path in list(rels.items()):
                 source_object = aq_inner(api.content.get(related_to_path))
                 if not source_object:
                     continue

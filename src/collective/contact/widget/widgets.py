@@ -150,7 +150,7 @@ function (event, data, formatted) {
     def render(self):
         settings = getUtility(IContactWidgetSettings)
         attributes = settings.add_contact_infos(self)
-        for key, value in attributes.items():
+        for key, value in list(attributes.items()):
             setattr(self, key, value)
         if self.mode == z3c.form.interfaces.DISPLAY_MODE:
             return self.display_template(self)
@@ -187,7 +187,7 @@ function (event, data, formatted) {
         return content
 
     def prefilter_terms(self):
-        if isinstance(self.field.prefilter_vocabulary, basestring):
+        if isinstance(self.field.prefilter_vocabulary, str):
             vocabulary = getUtility(IVocabularyFactory, name=self.field.prefilter_vocabulary)
             return vocabulary(self.context)
         elif IVocabulary.providedBy(self.field.prefilter_vocabulary):
